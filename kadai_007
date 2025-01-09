@@ -1,0 +1,41 @@
+! pip install japanize-matplotlib
+
+# Step 1 
+#モジュールのインポート
+import pandas as pd
+import matplotlib.pyplot as plt 
+import japanize_matplotlib
+import numpy as np
+
+# Step 2
+
+df = pd.read_csv('sample_pandas_6.csv')
+category_df = pd.read_csv('category.csv')
+df = pd.merge(df, category_df[['商品番号', 'カテゴリー']], how = 'inner', on = '商品番号')
+
+
+# カテゴリー列の要素（弁当・デザートなど）のユニークな出現頻度をカウントするメソッド
+category_counts = df['カテゴリー'].value_counts()
+print(category_counts)
+
+# そのメソッドの実行結果を棒グラフ化するメソッドを組み合わせたコードを記述する
+category_counts.plot(kind = 'bar')
+
+# Step3 グラフで表示する
+plt.title('カテゴリーごとの商品数')
+plt.xlabel('カテゴリー')
+plt.ylabel('商品数')
+plt.show()
+
+# Step 4 商品番号ごとに要素をグループにまとめサブ列を集計するメソッドと基本統計量を算出するメソッドを組み合わせたコードを記載する。
+
+# 商品番号ごとに在庫の最大数を集計
+# df_maxに「在庫の最大値」を計算し、格納
+df_max = df.groupby('商品番号')['在庫'].max()
+
+
+# データ全体の基本統計量を算出する
+df_stockd_description = df.groupby('商品番号')['在庫'].describe()
+
+print(df_max)
+print(df_stockd_description)
